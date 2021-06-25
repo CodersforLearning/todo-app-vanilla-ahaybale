@@ -13,11 +13,12 @@
   <body>
     <div id="app">
       <h1>Todo List</h1>
-      <div v-for="(item, index) in todos">
-        <div v-on:click="toggle(index)">{{item.status}}</div>
-        <div>{{item.text}}</div>
-        <div v-on:click="removeTodo(index)">🗑️</div>
-      </div>
+      <ol  v-for="(item, index) in todos">
+            <li>{{index+1}}. </li>
+            <li class="rowitem" v-on:click="toggle(index)" id=>{{item.status}}</li>
+            <li class="rowitem">{{item.text}}</li>
+            <li class="rowitem" v-on:click="removeTodo(index)">🗑️</li>
+      </ol>
 
       <hr />
 
@@ -28,10 +29,10 @@
     </div>
 
     <script>
-      var app = new Vue({
+       var app = new Vue({
         el: "#app",
         data: {
-          todos: [{ text: "Mack", status: "✅" }],
+          todos: [{ text: "Task 1", status: "✅" }],
           text: "" ,
         },
 
@@ -39,26 +40,21 @@
           addTodo() {
             if (this.text.length >= 1) {
               this.todos.push({ status: "🟩", text: this.text });
+              this.text = "";
             }
-            this.text = "";
           },
 
           toggle(index) {
-            if(this.todos[index].status=="✅"){
-              this.todos[index].status = "🟩";
-            }
-            else{
-              this.todos[index].status = "✅";
-            }
+            this.todos[index].status = this.todos[index].status=="✅" ? "🟩" : "✅";
           },
 
           removeTodo(index) {
-            delete this.todos[index];
             const temp = [];
-            for (var n = 0; n < this.todos.length; n++) {
-              if(this.todos[n]!=undefined){
+            for (var n = 0; n < index; n++) {
                 temp.push(this.todos[n]);
-              }
+            }
+            for (var n = index+1; n < this.todos.length; n++) {
+                temp.push(this.todos[n]);
             }
             this.todos = temp;
           },
