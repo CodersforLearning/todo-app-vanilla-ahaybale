@@ -29,10 +29,15 @@
     </div>
 
     <script>
+       if(localStorage.getItem("storeditems") == null){
+        localStorage.setItem("storeditems",JSON.stringify([]));
+      }
+
        var app = new Vue({
         el: "#app",
         data: {
-          todos: [{ text: "Task 1", status: "✅" }],
+          // todos: JSON.parse(localStorage.getItem("storeditems")),
+          todos: JSON.parse(localStorage.getItem("storeditems")),
           text: "" ,
         },
 
@@ -40,12 +45,18 @@
           addTodo() {
             if (this.text.length >= 1) {
               this.todos.push({ status: "🟩", text: this.text });
+              localStorage.setItem("storeditems",JSON.stringify(this.todos));
               this.text = "";
+            }
+            else{
+              alert("Enter something");
             }
           },
 
           toggle(index) {
             this.todos[index].status = this.todos[index].status=="✅" ? "🟩" : "✅";
+            localStorage.setItem("storeditems",JSON.stringify(this.todos));
+
           },
 
           removeTodo(index) {
@@ -57,9 +68,10 @@
                 temp.push(this.todos[n]);
             }
             this.todos = temp;
+            localStorage.setItem("storeditems",JSON.stringify(this.todos));
+
           },
         },
       });
-    </script>
   </body>
 </html>
