@@ -1,0 +1,16 @@
+h1 {
+  color: rgb(92, 211, 151);
+  margin:0;
+  
+}
+
+ol{
+  margin:0;
+  padding:0;
+  
+}
+
+.rowitem{
+  display: inline-block;
+
+}
