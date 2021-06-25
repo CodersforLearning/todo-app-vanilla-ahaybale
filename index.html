@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adam's Todo</title>
+
+    <!-- <link rel="stylesheet" href="todo.css" /> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <h1>Todo List</h1>
+      <div v-for="(item, index) in todos">
+        <div v-on:click="toggle(index)">{{item.status}}</div>
+        <div>{{item.text}}</div>
+        <div v-on:click="removeTodo(index)">🗑️</div>
+      </div>
+
+      <hr />
+
+      <form v-on:submit.prevent="addTodo">
+        <input v-model="text" />
+        <button type="submit">➕</button>
+      </form>
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          todos: [{ text: "Mack", status: "✅" }],
+          text: "" ,
+        },
+
+        methods: {
+          addTodo() {
+            if (this.text.length >= 1) {
+              this.todos.push({ status: "🟩", text: this.text });
+            }
+            this.text = "";
+          },
+
+          toggle(index) {
+            if(this.todos[index].status=="✅"){
+              this.todos[index].status = "🟩";
+            }
+            else{
+              this.todos[index].status = "✅";
+            }
+          },
+
+          removeTodo(index) {
+            delete this.todos[index];
+            const temp = [];
+            for (var n = 0; n < this.todos.length; n++) {
+              if(this.todos[n]!=undefined){
+                temp.push(this.todos[n]);
+              }
+            }
+            this.todos = temp;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
