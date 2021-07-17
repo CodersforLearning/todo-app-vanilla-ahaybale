@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adam's Todo</title>
+
+    <link rel="stylesheet" href="todo.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <h1>Todo List</h1>
+      <ol  v-for="(item, index) in todos">
+            <li>{{index+1}}. </li>
+            <li class="rowitem" v-on:click="toggle(index)" id=>{{item.status}}</li>
+            <li class="rowitem">{{item.text}}</li>
+            <li class="rowitem" v-on:click="removeTodo(index)">🗑️</li>
+      </ol>
+
+      <hr />
+
+      <form v-on:submit.prevent="addTodo">
+        <input v-model="text" />
+        <button type="submit">➕</button>
+      </form>
+    </div>
+
+    <script>
+       if(localStorage.getItem("storeditems") == null){
+        localStorage.setItem("storeditems",JSON.stringify([]));
+      }
+
+       var app = new Vue({
+        el: "#app",
+        data: {
+          // todos: JSON.parse(localStorage.getItem("storeditems")),
+          todos: JSON.parse(localStorage.getItem("storeditems")),
+          text: "" ,
+        },
+
+        methods: {
+          addTodo() {
+            if (this.text.length >= 1) {
+              this.todos.push({ status: "🟩", text: this.text });
+              localStorage.setItem("storeditems",JSON.stringify(this.todos));
+              this.text = "";
+            }
+            else{
+              alert("Enter something");
+            }
+          },
+
+          toggle(index) {
+            this.todos[index].status = this.todos[index].status=="✅" ? "🟩" : "✅";
+            localStorage.setItem("storeditems",JSON.stringify(this.todos));
+
+          },
+
+          removeTodo(index) {
+            const temp = [];
+            for (var n = 0; n < index; n++) {
+                temp.push(this.todos[n]);
+            }
+            for (var n = index+1; n < this.todos.length; n++) {
+                temp.push(this.todos[n]);
+            }
+            this.todos = temp;
+            localStorage.setItem("storeditems",JSON.stringify(this.todos));
+
+          },
+        },
+      });
+  </body>
+</html>
